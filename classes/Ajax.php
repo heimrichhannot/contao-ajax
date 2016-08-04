@@ -87,9 +87,9 @@ class Ajax
 	 */
 	protected function getActiveAction($strGroupRequested, $strActionRequested)
 	{
-		$strScope = Request::getInstance()->query->get(static::AJAX_ATTR_SCOPE);
-		$strGroup = Request::getInstance()->query->get(static::AJAX_ATTR_GROUP);
-		$strAct   = Request::getInstance()->query->get(static::AJAX_ATTR_ACT);
+		$strScope = Request::getGet(static::AJAX_ATTR_SCOPE);
+		$strGroup = Request::getGet(static::AJAX_ATTR_GROUP);
+		$strAct   = Request::getGet(static::AJAX_ATTR_ACT);
 		
 		if ($strScope !== static::AJAX_SCOPE_DEFAULT) {
 			return null;
