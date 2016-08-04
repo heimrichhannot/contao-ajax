@@ -1,0 +1,35 @@
+{
+    "name": "heimrichhannot/contao-ajax",
+    "description":"Keep contao ajax requests organized and handle responses with ease.",
+    "keywords":["contao", "ajax", "request", "response"],
+    "type": "contao-module",
+    "homepage":"https://github.com/heimrichhannot/contao-ajax",
+    "license":"LGPL-3.0+",
+    "authors":[
+        {
+            "name":"Heimrich & Hannot",
+            "email":"digitales@heimrich-hannot.de",
+            "homepage":"http://www.heimrich-hannot.de",
+            "role":"Developer"
+        }
+    ],
+    "support":{
+        "issues":"https://github.com/heimrichhannot/contao-ajax/issues"
+    },
+    "require": {
+        "contao/core": ">=3.2,<4-dev",
+        "codefog/contao-haste": "~4.0",
+        "heimrichhannot/contao-haste_plus": "~1.4",
+        "heimrichhannot/contao-request": "~1.0"
+	},
+    "autoload": {
+        "classmap": [""]
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "": "system/modules/ajax"
+            }
+        }
+    }
+}
