@@ -15,11 +15,11 @@ use HeimrichHannot\Request\Request;
 
 class Ajax
 {
-	const AJAX_ATTR_SCOPE  = 'scope';
-	const AJAX_ATTR_ACT    = 'act';
-	const AJAX_ATTR_GROUP  = 'group';
-	const AJAX_ATTR_TYPE   = 'type';
-	const AJAX_ATTR_AJAXID = 'ajaxid';
+	const AJAX_ATTR_SCOPE  = 'as';
+	const AJAX_ATTR_ACT    = 'aa';
+	const AJAX_ATTR_GROUP  = 'ag';
+	const AJAX_ATTR_TYPE   = 'at';
+	const AJAX_ATTR_AJAXID = 'aid';
 	
 	const AJAX_SCOPE_DEFAULT = 'ajax';
 	const AJAX_TYPE_MODULE   = 'module';
