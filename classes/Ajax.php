@@ -37,6 +37,27 @@ class Ajax
 	protected static $objInstance;
 	
 	/**
+	 * Determine if the current ajax request is group related
+	 * @param $strGroup The ajax group
+	 *
+	 * @return boolean True / False if group from request match, otherwise null (no ajax request)
+	 */
+	public static function isRelated($strGroupRequested)
+	{
+		if (Request::getInstance()->isXmlHttpRequest())
+		{
+			if(($strGroup = static::getActiveGroup($strGroupRequested)) === null)
+			{
+				return false;
+			}
+			
+			return true;
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * Trigger a valid ajax action
 	 * @param $strGroup
 	 * @param $strAction
@@ -81,25 +102,47 @@ class Ajax
 	 * Get the active ajax action object
 	 *
 	 * @param $strGroupRequested Requested ajax group
-	 * @param $strActionRequested Requested ajax action within group
 	 *
-	 * @return AjaxAction|null  A valid AjaxAction | null if the action is not a registered ajax action
+	 * @return string The name of the active group, otherwise null
 	 */
-	protected function getActiveAction($strGroupRequested, $strActionRequested)
+	public static function getActiveGroup($strGroupRequested)
 	{
 		$strScope = Request::getGet(static::AJAX_ATTR_SCOPE);
 		$strGroup = Request::getGet(static::AJAX_ATTR_GROUP);
-		$strAct   = Request::getGet(static::AJAX_ATTR_ACT);
 		
 		if ($strScope !== static::AJAX_SCOPE_DEFAULT) {
 			return null;
 		}
 		
-		if (!$strGroup || !$strAct) {
+		if (!$strGroup) {
 			return null;
 		}
 		
 		if($strGroupRequested != $strGroup)
+		{
+			return null;
+		}
+		
+		return $strGroup;
+	}
+	
+	/**
+	 * Get the active ajax action object
+	 *
+	 * @param $strGroupRequested Requested ajax group
+	 * @param $strActionRequested Requested ajax action within group
+	 *
+	 * @return AjaxAction|null  A valid AjaxAction | null if the action is not a registered ajax action
+	 */
+	public static function getActiveAction($strGroupRequested, $strActionRequested)
+	{
+		$strAct   = Request::getGet(static::AJAX_ATTR_ACT);
+		
+		if (!$strAct) {
+			return null;
+		}
+		
+		if(($strGroup = static::getActiveGroup($strGroupRequested)) === null)
 		{
 			return null;
 		}
@@ -115,17 +158,17 @@ class Ajax
 			return null;
 		}
 		
-		if (!isset($arrConfig[$strGroupRequested]))
+		if (!isset($arrConfig[$strGroup]))
 		{
 			return AJAX_ERROR_INVALID_GROUP;
 		}
 		
-		if (!is_array($arrConfig[$strGroupRequested]['actions']))
+		if (!is_array($arrConfig[$strGroup]['actions']))
 		{
 			return AJAX_ERROR_NO_AVAILABLE_ACTIONS;
 		}
 		
-		$arrActions = $arrConfig[$strGroupRequested]['actions'];
+		$arrActions = $arrConfig[$strGroup]['actions'];
 		
 		if (!array_key_exists($strActionRequested, $arrActions))
 		{
