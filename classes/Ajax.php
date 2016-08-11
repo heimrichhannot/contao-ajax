@@ -92,7 +92,7 @@ class Ajax
 				/** @var Response */
 				if($objResponse instanceof Response)
 				{
-					die(json_encode($objResponse));
+					$objResponse->output();
 				}
 			}
 		}

@@ -18,10 +18,4 @@ class ResponseRedirect extends Response
 		parent::__construct($message);
 		header('HTTP/1.1 301 Moved Permanently');
 	}
-	
-	
-	public function setUrl($strUrl)
-	{
-		$this->setResult(new ResponseData('', array('url' => $strUrl)));
-	}
 }

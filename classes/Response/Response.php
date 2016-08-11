@@ -28,7 +28,7 @@ abstract class Response implements \JsonSerializable
 	 */
 	public function getResult()
 	{
-		return $this->result;
+		return $this->result === null ? new ResponseData() : $this->result;
 	}
 	
 	/**
@@ -59,6 +59,36 @@ abstract class Response implements \JsonSerializable
 	public function jsonSerialize()
 	{
 		return get_object_vars($this);
+	}
+	
+	public function setCloseModal($blnClose = false)
+	{
+		$objResult = $this->getResult();
+		$arrData = $objResult->getData();
+		$arrData['closeModal'] = $blnClose;
+		$objResult->setData($arrData);
+		$this->setResult($objResult);
+	}
+	
+	public function setUrl($strUrl)
+	{
+		$objResult = $this->getResult();
+		$arrData = $objResult->getData();
+		$arrData['url'] = $strUrl;
+		$objResult->setData($arrData);
+		$this->setResult($objResult);
+	}
+	
+	/**
+	 * Output the response and clean output buffer
+	 */
+	public function output()
+	{
+		ob_get_clean();
+		$strBuffer = json_encode($this);
+		
+		echo $strBuffer;
+		exit;
 	}
 	
 }

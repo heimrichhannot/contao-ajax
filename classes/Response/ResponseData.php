@@ -16,7 +16,7 @@ class ResponseData implements \JsonSerializable
 	/**
 	 * @var array $data
 	 */
-	protected $data;
+	protected $data = array();
 	
 	/**
 	 * @var string $html
