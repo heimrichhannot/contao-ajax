@@ -28,7 +28,7 @@ class AjaxAction
 		$this->arrAttributes = $arrAttributes;
 	}
 	
-	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = false, $strUrl = null)
+	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
 	{
 		global $objPage;
 		
