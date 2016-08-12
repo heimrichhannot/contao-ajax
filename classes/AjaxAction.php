@@ -28,6 +28,11 @@ class AjaxAction
 		$this->arrAttributes = $arrAttributes;
 	}
 	
+	public static function removeAjaxParametersFromUrl($strUrl)
+	{
+		return Url::removeQueryString(array(Ajax::AJAX_ATTR_SCOPE, Ajax::AJAX_ATTR_GROUP, Ajax::AJAX_ATTR_ACT), $strUrl);
+	}
+	
 	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
 	{
 		global $objPage;
