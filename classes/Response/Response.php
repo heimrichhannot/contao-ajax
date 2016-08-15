@@ -86,7 +86,7 @@ abstract class Response implements \JsonSerializable
 	{
 		ob_get_clean();
 		$strBuffer = json_encode($this);
-		echo \Controller::replaceInsertTags($strBuffer);
+		echo \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
 		exit;
 	}
 	
