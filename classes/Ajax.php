@@ -13,7 +13,7 @@ namespace HeimrichHannot\Ajax;
 use HeimrichHannot\Ajax\Response\Response;
 use HeimrichHannot\Request\Request;
 
-class Ajax
+class Ajax extends \Controller
 {
 	const AJAX_ATTR_SCOPE  = 'as';
 	const AJAX_ATTR_ACT    = 'aa';

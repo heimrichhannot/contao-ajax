@@ -30,7 +30,7 @@ class AjaxAction
 	
 	public static function removeAjaxParametersFromUrl($strUrl)
 	{
-		return Url::removeQueryString(array(Ajax::AJAX_ATTR_SCOPE, Ajax::AJAX_ATTR_GROUP, Ajax::AJAX_ATTR_ACT), $strUrl);
+		return Url::removeQueryString(array(Ajax::AJAX_ATTR_SCOPE, Ajax::AJAX_ATTR_GROUP, Ajax::AJAX_ATTR_ACT, Ajax::AJAX_ATTR_TYPE, Ajax::AJAX_ATTR_AJAXID), $strUrl);
 	}
 	
 	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
