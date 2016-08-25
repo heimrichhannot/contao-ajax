@@ -16,6 +16,6 @@ class ResponseRedirect extends Response
 	public function __construct($message = '')
 	{
 		parent::__construct($message);
-		header('HTTP/1.1 301 Moved Permanently');
+		header('HTTP/1.1 300 Multiple Choices'); // use 300 instead of 301 here, otherwise ie wont allow response payload
 	}
 }
