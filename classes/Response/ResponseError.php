@@ -12,12 +12,9 @@ namespace HeimrichHannot\Ajax\Response;
 
 class ResponseError extends Response
 {
-	protected $state = Response::STATE_ERROR;
-	
 	public function __construct($message = '')
 	{
 		parent::__construct($message);
 		header('HTTP/1.1 400 Bad Request');
 	}
-	
 }
