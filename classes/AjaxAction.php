@@ -11,6 +11,8 @@
 namespace HeimrichHannot\Ajax;
 
 use Haste\Util\Url;
+use HeimrichHannot\Haste\Util\Arrays;
+use HeimrichHannot\Haste\Util\Classes;
 use HeimrichHannot\Request\Request;
 
 class AjaxAction
@@ -30,7 +32,8 @@ class AjaxAction
 	
 	public static function removeAjaxParametersFromUrl($strUrl)
 	{
-		return Url::removeQueryString(array(Ajax::AJAX_ATTR_SCOPE, Ajax::AJAX_ATTR_GROUP, Ajax::AJAX_ATTR_ACT, Ajax::AJAX_ATTR_TYPE, Ajax::AJAX_ATTR_AJAXID), $strUrl);
+		return Url::removeQueryString(
+			Classes::getConstantsByPrefixes('HeimrichHannot\Ajax\Ajax', array('AJAX_ATTR')), $strUrl);
 	}
 	
 	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
