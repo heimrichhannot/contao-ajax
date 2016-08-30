@@ -11,7 +11,6 @@
 namespace HeimrichHannot\Ajax;
 
 use Haste\Util\Url;
-use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\Classes;
 use HeimrichHannot\Request\Request;
 
@@ -29,14 +28,14 @@ class AjaxAction
 		$this->strAction     = $strAction;
 		$this->arrAttributes = $arrAttributes;
 	}
-	
+
 	public static function removeAjaxParametersFromUrl($strUrl)
 	{
 		return Url::removeQueryString(
 			Classes::getConstantsByPrefixes('HeimrichHannot\Ajax\Ajax', array('AJAX_ATTR')), $strUrl);
 	}
 	
-	public static function generateUrl($strGroup, $strAction, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
+	public static function generateUrl($strGroup, $strAction = null, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
 	{
 		global $objPage;
 		
@@ -47,8 +46,12 @@ class AjaxAction
 		
 		$strUrl = Url::addQueryString(Ajax::AJAX_ATTR_SCOPE . '=' . Ajax::AJAX_SCOPE_DEFAULT, $strUrl);
 		$strUrl = Url::addQueryString(Ajax::AJAX_ATTR_GROUP . '=' . $strGroup, $strUrl);
-		$strUrl = Url::addQueryString(Ajax::AJAX_ATTR_ACT . '=' . $strAction, $strUrl);
-		
+
+		if($strAction !== null)
+		{
+			$strUrl = Url::addQueryString(Ajax::AJAX_ATTR_ACT . '=' . $strAction, $strUrl);
+		}
+
 		foreach ($arrAttributes as $key => $attribute)
 		{
 			$strUrl = Url::addQueryString($key . '=' . $attribute, $strUrl);
