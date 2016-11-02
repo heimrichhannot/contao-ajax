@@ -81,7 +81,7 @@ class AjaxAction
 	{
 		$arrArgumentValues = array();
 		$arrArguments      = $this->arrAttributes['arguments'];
-		$arrOptional       = $this->arrAttributes['optional'];
+		$arrOptional       = is_array($this->arrAttributes['optional']) ? $this->arrAttributes['optional'] : array();
 		
 		$strMethod = Request::getInstance()->getMethod();
 		
