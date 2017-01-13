@@ -14,15 +14,15 @@ namespace HeimrichHannot\Ajax\Response;
 abstract class Response implements \JsonSerializable
 {
 	protected $result;
-	
+
 	protected $message;
-	
+
 	public function __construct($message = '')
 	{
 		$this->message = $message;
 		header('Content-Type: application/json; charset=' . \Config::get('characterSet'));
 	}
-	
+
 	/**
 	 * @return ResponseData
 	 */
@@ -30,7 +30,7 @@ abstract class Response implements \JsonSerializable
 	{
 		return $this->result === null ? new ResponseData() : $this->result;
 	}
-	
+
 	/**
 	 * @param ResponseData $result
 	 */
@@ -38,7 +38,7 @@ abstract class Response implements \JsonSerializable
 	{
 		$this->result = $result;
 	}
-	
+
 	/**
 	 * @return mixed
 	 */
@@ -46,7 +46,7 @@ abstract class Response implements \JsonSerializable
 	{
 		return $this->message;
 	}
-	
+
 	/**
 	 * @param mixed $message
 	 */
@@ -54,13 +54,13 @@ abstract class Response implements \JsonSerializable
 	{
 		$this->message = $message;
 	}
-	
-	
+
+
 	public function jsonSerialize()
 	{
 		return get_object_vars($this);
 	}
-	
+
 	public function setCloseModal($blnClose = false)
 	{
 		$objResult = $this->getResult();
@@ -69,7 +69,7 @@ abstract class Response implements \JsonSerializable
 		$objResult->setData($arrData);
 		$this->setResult($objResult);
 	}
-	
+
 	public function setUrl($strUrl)
 	{
 		$objResult = $this->getResult();
@@ -78,16 +78,16 @@ abstract class Response implements \JsonSerializable
 		$objResult->setData($arrData);
 		$this->setResult($objResult);
 	}
-	
+
 	/**
 	 * Output the response and clean output buffer
 	 */
 	public function output()
 	{
-		ob_get_clean();
-		$strBuffer = json_encode($this);
-		echo \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
+        ob_clean();
+        $strBuffer = json_encode($this);
+        echo \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
 		exit;
 	}
-	
+
 }

@@ -70,17 +70,17 @@ class Ajax extends \Controller
 			/** @var AjaxAction */
 			$objAction = Ajax::getActiveAction($strGroup, $strAction);
 			
-			if($objAction === AJAX_ERROR_INVALID_GROUP)
+			if($objAction === static::AJAX_ERROR_INVALID_GROUP)
 			{
 				header('HTTP/1.1 400 Bad Request');
 				die('Invalid ajax group.');
 			}
-			else if($objAction === AJAX_ERROR_NO_AVAILABLE_ACTIONS)
+			else if($objAction === static::AJAX_ERROR_NO_AVAILABLE_ACTIONS)
 			{
 				header('HTTP/1.1 400 Bad Request');
 				die('No available ajax actions within given group.');
 			}
-			else if($objAction === AJAX_ERROR_INVALID_ACTION)
+			else if($objAction === static::AJAX_ERROR_INVALID_ACTION)
 			{
 				header('HTTP/1.1 400 Bad Request');
 				die('Invalid ajax act.');
@@ -132,7 +132,7 @@ class Ajax extends \Controller
 	 * @param $strGroupRequested Requested ajax group
 	 * @param $strActionRequested Requested ajax action within group
 	 *
-	 * @return AjaxAction|null  A valid AjaxAction | null if the action is not a registered ajax action
+	 * @return AjaxAction|int  A valid AjaxAction | null if the action is not a registered ajax action
 	 */
 	public static function getActiveAction($strGroupRequested, $strActionRequested)
 	{
@@ -160,19 +160,19 @@ class Ajax extends \Controller
 		
 		if (!isset($arrConfig[$strGroup]))
 		{
-			return AJAX_ERROR_INVALID_GROUP;
+			return static::AJAX_ERROR_INVALID_GROUP;
 		}
 		
 		if (!is_array($arrConfig[$strGroup]['actions']))
 		{
-			return AJAX_ERROR_NO_AVAILABLE_ACTIONS;
+			return static::AJAX_ERROR_NO_AVAILABLE_ACTIONS;
 		}
 		
 		$arrActions = $arrConfig[$strGroup]['actions'];
 		
 		if (!array_key_exists($strActionRequested, $arrActions))
 		{
-			return AJAX_ERROR_INVALID_ACTION;
+			return static::AJAX_ERROR_INVALID_ACTION;
 		}
 		
 		$arrAttributes = $arrActions[$strAct];

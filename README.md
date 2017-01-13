@@ -124,6 +124,8 @@ default contao request-cycle.
 
 In case of the `toggleSubpalette` example we trigger the action within `DC_Hybrid::__construct()` and provide a `new FormAjax($this)` as Response Context.
 
+CAUTION: Don't call "runActiveAction" in generate() of a Contao module since that's too late. It's always best to run it in __construct().
+
 ```
 DC_Hybrid.php
 
@@ -132,9 +134,8 @@ public function __construct($strTable = '', $varConfig = null, $intId = 0)
     ...
     
     Ajax::runActiveAction(Form::FORMHYBRID_NAME, 'toggleSubpalette', new FormAjax($this));
-    Ajax::runActiveAction(Form::FORMHYBRID_NAME, 'reload', new FormAjax($this));
     
-    ....
+    ...
     
 }
 ```
