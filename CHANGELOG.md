@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.0.16] - 2017-02-08
+
+### Changed
+- AjaxAction: getArguments() now supports regular expressions
+
 ## [1.0.15] - 2017-01-13
 
 ### Fixed

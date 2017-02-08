@@ -111,7 +111,7 @@ class AjaxAction
                 continue;
             }
 
-            if (!in_array($argument, $arrOptional) && ($strMethod == 'POST' && !isset($_POST[$argument]) || $strMethod == 'GET' && !isset($_GET[$argument])))
+            if (count(preg_grep('/' . $argument . '/i', $arrOptional)) < 1 && count(preg_grep('/' . $argument . '/i', array_keys($strMethod == 'POST' ? $_POST : $_GET))) < 1)
             {
                 header('HTTP/1.1 400 Bad Request');
                 die('Bad Request, missing argument ' . $argument);
