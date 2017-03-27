@@ -1,9 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.0.16] - 2017-02-08
+## [1.0.16] - 2017-03-27
 
 ### Changed
+- On ajax request in front end mode where request token expired, create a new request token and added `Ajax::isRequestTokenExpired()` to check within your implementation
 - AjaxAction: getArguments() now supports regular expressions
 
 ## [1.0.15] - 2017-01-13

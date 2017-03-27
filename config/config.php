@@ -11,7 +11,12 @@
 /**
  * Ajax Actions
  */
-$GLOBALS['AJAX'] = array
-(
-	
-);
+$GLOBALS['AJAX'] = [
+
+];
+
+
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['initializeSystem'][] = ['HeimrichHannot\Ajax\Hooks', 'initializeSystemHook'];

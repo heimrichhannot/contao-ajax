@@ -103,6 +103,8 @@ class AjaxAction
 
         $strMethod = Request::getInstance()->getMethod();
 
+        $arrCurrentArguments = Request::getInstance()->isMethod('POST') ? Request::getInstance()->request->all() : Request::getInstance()->query->all();
+
         foreach ($arrArguments as $argument)
         {
             if (is_array($argument) || is_bool($argument))
@@ -111,14 +113,14 @@ class AjaxAction
                 continue;
             }
 
-            if (count(preg_grep('/' . $argument . '/i', $arrOptional)) < 1 && count(preg_grep('/' . $argument . '/i', array_keys($strMethod == 'POST' ? $_POST : $_GET))) < 1)
+            if (count(preg_grep('/' . $argument . '/i', $arrOptional)) < 1 && count(preg_grep('/' . $argument . '/i', array_keys($arrCurrentArguments))) < 1)
             {
                 header('HTTP/1.1 400 Bad Request');
                 die('Bad Request, missing argument ' . $argument);
             }
 
 
-            $varValue = $strMethod == 'POST' ? Request::getPost($argument) : Request::getGet($argument);
+            $varValue = Request::getInstance()->isMethod('POST') ? Request::getPost($argument) : Request::getGet($argument);
 
             if ($varValue === 'true' || $varValue === 'false')
             {
