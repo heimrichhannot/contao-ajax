@@ -11,6 +11,8 @@
 namespace HeimrichHannot\Ajax;
 
 use Haste\Util\Url;
+use HeimrichHannot\Ajax\Response\Response;
+use HeimrichHannot\Ajax\Response\ResponseError;
 use HeimrichHannot\Haste\Util\Classes;
 use HeimrichHannot\Request\Request;
 
@@ -74,22 +76,25 @@ class AjaxAction
 
         if ($objContext === null)
         {
-            header('HTTP/1.1 400 Bad Request');
-            die('Bad Request, context not set.');
+            $objResponse = new ResponseError('Bad Request, context not set.');
+            $objResponse->send();
+            exit;
         }
 
         if (!method_exists($objContext, $this->strAction))
         {
-            header('HTTP/1.1 400 Bad Request');
-            die('Bad Request, ajax method does not exist within context.');
+            $objResponse = new ResponseError('Bad Request, ajax method does not exist within context.');
+            $objResponse->send();
+            exit;
         }
 
         $reflection = new \ReflectionMethod($objContext, $this->strAction);
 
         if (!$reflection->isPublic())
         {
-            header('HTTP/1.1 400 Bad Request');
-            die('Bad Request, the called method is not public.');
+            $objResponse = new ResponseError('Bad Request, the called method is not public.');
+            $objResponse->send();
+            exit;
         }
 
         return call_user_func_array(array($objContext, $this->strAction), $this->getArguments());
@@ -115,8 +120,9 @@ class AjaxAction
 
             if (count(preg_grep('/' . $argument . '/i', $arrOptional)) < 1 && count(preg_grep('/' . $argument . '/i', array_keys($arrCurrentArguments))) < 1)
             {
-                header('HTTP/1.1 400 Bad Request');
-                die('Bad Request, missing argument ' . $argument);
+                $objResponse = new ResponseError('Bad Request, missing argument ' . $argument);
+                $objResponse->send();
+                exit;
             }
 
 

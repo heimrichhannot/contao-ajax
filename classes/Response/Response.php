@@ -10,84 +10,93 @@
 
 namespace HeimrichHannot\Ajax\Response;
 
+use HeimrichHannot\Ajax\Exception\AjaxExitException;
 
-abstract class Response implements \JsonSerializable
+abstract class Response extends \Symfony\Component\HttpFoundation\Response implements \JsonSerializable
 {
-	protected $result;
+    protected $result;
 
-	protected $message;
+    protected $message;
 
-	public function __construct($message = '')
-	{
-		$this->message = $message;
-		header('Content-Type: application/json; charset=' . \Config::get('characterSet'));
-	}
+    public function __construct($message = '')
+    {
+        parent::__construct($message);
 
-	/**
-	 * @return ResponseData
-	 */
-	public function getResult()
-	{
-		return $this->result === null ? new ResponseData() : $this->result;
-	}
+        $this->message = $message;
+        $this->headers->set('Content-Type', 'application/json; charset=' . \Config::get('characterSet'));
+    }
 
-	/**
-	 * @param ResponseData $result
-	 */
-	public function setResult(ResponseData $result)
-	{
-		$this->result = $result;
-	}
+    /**
+     * @return ResponseData
+     */
+    public function getResult()
+    {
+        return $this->result === null ? new ResponseData() : $this->result;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getMessage()
-	{
-		return $this->message;
-	}
+    /**
+     * @param ResponseData $result
+     */
+    public function setResult(ResponseData $result)
+    {
+        $this->result = $result;
+    }
 
-	/**
-	 * @param mixed $message
-	 */
-	public function setMessage($message)
-	{
-		$this->message = $message;
-	}
+    /**
+     * @return mixed
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param mixed $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    }
 
 
-	public function jsonSerialize()
-	{
-		return get_object_vars($this);
-	}
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 
-	public function setCloseModal($blnClose = false)
-	{
-		$objResult = $this->getResult();
-		$arrData = $objResult->getData();
-		$arrData['closeModal'] = $blnClose;
-		$objResult->setData($arrData);
-		$this->setResult($objResult);
-	}
+    public function setCloseModal($blnClose = false)
+    {
+        $objResult             = $this->getResult();
+        $arrData               = $objResult->getData();
+        $arrData['closeModal'] = $blnClose;
+        $objResult->setData($arrData);
+        $this->setResult($objResult);
+    }
 
-	public function setUrl($strUrl)
-	{
-		$objResult = $this->getResult();
-		$arrData = $objResult->getData();
-		$arrData['url'] = $strUrl;
-		$objResult->setData($arrData);
-		$this->setResult($objResult);
-	}
+    public function setUrl($strUrl)
+    {
+        $objResult      = $this->getResult();
+        $arrData        = $objResult->getData();
+        $arrData['url'] = $strUrl;
+        $objResult->setData($arrData);
+        $this->setResult($objResult);
+    }
 
-	/**
-	 * Output the response and clean output buffer
-	 */
-	public function output()
-	{
+    /**
+     * Output the response and clean output buffer
+     */
+    public function output()
+    {
         ob_clean();
         $strBuffer = json_encode($this);
+
+        if (defined('UNIT_TESTING'))
+        {
+            throw new AjaxExitException($strBuffer, AjaxExitException::CODE_NORMAL_EXIT);
+        }
+
         echo \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
-		exit;
-	}
+        exit;
+    }
 
 }

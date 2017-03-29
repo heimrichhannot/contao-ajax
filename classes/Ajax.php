@@ -11,6 +11,7 @@
 namespace HeimrichHannot\Ajax;
 
 use HeimrichHannot\Ajax\Response\Response;
+use HeimrichHannot\Ajax\Response\ResponseError;
 use HeimrichHannot\Request\Request;
 
 class Ajax extends \Controller
@@ -74,22 +75,25 @@ class Ajax extends \Controller
 
             if ($objAction === static::AJAX_ERROR_INVALID_GROUP)
             {
-                header('HTTP/1.1 400 Bad Request');
-                die('Invalid ajax group.');
+                $objResponse = new ResponseError('Invalid ajax group.');
+                $objResponse->send();
+                exit;
             }
             else
             {
                 if ($objAction === static::AJAX_ERROR_NO_AVAILABLE_ACTIONS)
                 {
-                    header('HTTP/1.1 400 Bad Request');
-                    die('No available ajax actions within given group.');
+                    $objResponse = new ResponseError('No available ajax actions within given group.');
+                    $objResponse->send();
+                    exit;
                 }
                 else
                 {
                     if ($objAction === static::AJAX_ERROR_INVALID_ACTION)
                     {
-                        header('HTTP/1.1 400 Bad Request');
-                        die('Invalid ajax act.');
+                        $objResponse = new ResponseError('Invalid ajax act.');
+                        $objResponse->send();
+                        exit;
                     }
                     else
                     {

@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2017-03-29
+
+### Changed
+- All Requests and Responses make now usage of `\Symfony\Component\HttpFoundation` to provide unit test handling, removed all `header()` calls
+
+### Added 
+- phpunit support added for Response Classes, simply set $GLOBALS variable with `define('UNIT_TESTING', true);` in your unittest bootstrap.php 
+
 ## [1.0.16] - 2017-03-27
 
 ### Changed

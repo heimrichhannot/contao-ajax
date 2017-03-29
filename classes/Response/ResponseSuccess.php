@@ -15,6 +15,6 @@ class ResponseSuccess extends Response
 	public function __construct($message = '')
 	{
 		parent::__construct($message);
-		header('HTTP/1.1 200 OK');
+        $this->setStatusCode(Response::HTTP_OK);
 	}
 }

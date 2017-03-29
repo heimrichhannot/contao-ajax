@@ -287,3 +287,45 @@ $objResponse = new ResponseRedirect();
 $objResponse->setUrl($strUrl);
 die(json_encode($objResponse));
 ```
+
+## Unit Testing
+
+For unit testing, define the variable `UNIT_TESTING` as `true` within the $GLOBALS.
+
+```
+//bootstrap.php
+
+define('UNIT_TESTING', true);
+```
+
+Than you are able to catch the ajax result within you test, by catching the `HeimrichHannot\Ajax\Exception\AjaxExitException`.
+
+```
+// MyTestClass.php
+
+    /**
+     * @test
+     */
+    public function myTest()
+    {
+        $objRequest = \Symfony\Component\HttpFoundation\Request::create('http://localhost' . AjaxAction::generateUrl('myAjaxGroup', 'myAjaxAction'), 'post');
+
+        $objRequest->headers->set('X-Requested-With', 'XMLHttpRequest'); // xhr request
+
+        Request::set($objRequest);
+
+		$objForm = new TestPostForm();
+
+        try
+        {
+            $objForm->generate();
+            // unreachable code: if no exception is thrown after form was created, something went wrong
+            $this->expectException(\HeimrichHannot\Ajax\Exception\AjaxExitException::class);
+        } catch (AjaxExitException $e)
+        {
+            $objJson = json_decode($e->getMessage());
+
+            $this->assertTrue(strpos($objJson->result->html, 'id="my_css_id"') > 0); // check that id is present within response
+        }
+    }
+```

@@ -15,6 +15,6 @@ class ResponseError extends Response
 	public function __construct($message = '')
 	{
 		parent::__construct($message);
-		header('HTTP/1.1 400 Bad Request');
+        $this->setStatusCode(Response::HTTP_BAD_REQUEST);
 	}
 }

@@ -15,6 +15,6 @@ class Response404 extends Response
 	public function __construct($message = '')
 	{
 		parent::__construct($message);
-		header('HTTP/1.1 404 Not found');
+		$this->setStatusCode(Response::HTTP_NOT_FOUND);
 	}
 }
