@@ -82,13 +82,22 @@ abstract class Response extends \Symfony\Component\HttpFoundation\Response imple
         $this->setResult($objResult);
     }
 
+    public function getOutputData()
+    {
+        $objOutput = new \stdClass();
+        $objOutput->result = $this->result;
+        $objOutput->message = $this->message;
+
+        return $objOutput;
+    }
+
     /**
      * Output the response and clean output buffer
      */
     public function output()
     {
         ob_clean();
-        $strBuffer = json_encode($this);
+        $strBuffer = json_encode($this->getOutputData());
 
         if (defined('UNIT_TESTING'))
         {

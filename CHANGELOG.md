@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.1] - 2017-03-31
+
+### Fixed
+- Return only result and message within `HeimrichHannot\Ajax\Response`
+
 ## [1.1.0] - 2017-03-29
 
 ### Changed
