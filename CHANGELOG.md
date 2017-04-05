@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.2] - 2017-04-05
+
+### Fixed
+- `HeimrichHannot\Ajax\Response` did not return a valid JsonResponse, now extends `\Symfony\Component\HttpFoundation\JsonResponse`
+
 ## [1.1.1] - 2017-03-31
 
 ### Fixed

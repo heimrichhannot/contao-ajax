@@ -12,7 +12,7 @@ namespace HeimrichHannot\Ajax\Response;
 
 use HeimrichHannot\Ajax\Exception\AjaxExitException;
 
-abstract class Response extends \Symfony\Component\HttpFoundation\Response implements \JsonSerializable
+abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse implements \JsonSerializable
 {
     protected $result;
 
@@ -21,9 +21,7 @@ abstract class Response extends \Symfony\Component\HttpFoundation\Response imple
     public function __construct($message = '')
     {
         parent::__construct($message);
-
         $this->message = $message;
-        $this->headers->set('Content-Type', 'application/json; charset=' . \Config::get('characterSet'));
     }
 
     /**
@@ -84,8 +82,8 @@ abstract class Response extends \Symfony\Component\HttpFoundation\Response imple
 
     public function getOutputData()
     {
-        $objOutput = new \stdClass();
-        $objOutput->result = $this->result;
+        $objOutput          = new \stdClass();
+        $objOutput->result  = $this->result;
         $objOutput->message = $this->message;
 
         return $objOutput;
@@ -97,14 +95,19 @@ abstract class Response extends \Symfony\Component\HttpFoundation\Response imple
     public function output()
     {
         ob_clean();
+
         $strBuffer = json_encode($this->getOutputData());
+
+        $strBuffer = \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
+
+        $this->setJson($strBuffer);
 
         if (defined('UNIT_TESTING'))
         {
             throw new AjaxExitException($strBuffer, AjaxExitException::CODE_NORMAL_EXIT);
         }
 
-        echo \Controller::replaceInsertTags($strBuffer, false); // do not cache inserttags
+        $this->send();
         exit;
     }
 
