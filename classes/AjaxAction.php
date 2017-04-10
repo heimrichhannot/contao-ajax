@@ -89,12 +89,6 @@ class AjaxAction
     {
         $objItem = null;
 
-        // remove current used ajax token
-        if($this->strToken !== null)
-        {
-            AjaxToken::getInstance()->remove($this->strToken);
-        }
-
         if ($objContext === null)
         {
             $objResponse = new ResponseError('Bad Request, context not set.');

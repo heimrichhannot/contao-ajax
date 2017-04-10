@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.5] - 2017-04-10
+
+### Fixed
+- remove ajax token only when output is valid response
+
 ## [1.1.4] - 2017-04-10
 
 ### Changed
