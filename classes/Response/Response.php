@@ -123,12 +123,12 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
         $this->setJson($strBuffer);
 
-        if (defined('UNIT_TESTING'))
-        {
-            throw new AjaxExitException($strBuffer, AjaxExitException::CODE_NORMAL_EXIT);
-        }
-
         $this->send();
+
+		// do not display errors in ajax request, as the generated json will no longer be valid
+		// error messages my occur, due to exit and \FrontendUser::destruct does no longer have a valid \Database instance
+        ini_set('display_errors', 0); 
+
         exit;
     }
 

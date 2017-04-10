@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.4] - 2017-04-10
+
+### Changed
+- do never show error messages within `Response::output()`
+
 ## [1.1.3] - 2017-04-10
 
 ### Added
