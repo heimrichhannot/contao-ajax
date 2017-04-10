@@ -24,22 +24,25 @@ class AjaxAction
 
     protected $arrAttributes;
 
-    public function __construct($strGroup, $strAction, array $arrAttributes = array())
+    protected $strToken;
+
+    public function __construct($strGroup, $strAction, array $arrAttributes = [], $strToken = null)
     {
         $this->strGroup      = $strGroup;
         $this->strAction     = $strAction;
         $this->arrAttributes = $arrAttributes;
+        $this->strToken      = $strToken;
     }
 
     public static function removeAjaxParametersFromUrl($strUrl)
     {
         return Url::removeQueryString(
-            Classes::getConstantsByPrefixes('HeimrichHannot\Ajax\Ajax', array('AJAX_ATTR')),
+            Classes::getConstantsByPrefixes('HeimrichHannot\Ajax\Ajax', ['AJAX_ATTR']),
             $strUrl
         );
     }
 
-    public static function generateUrl($strGroup, $strAction = null, array $arrAttributes = array(), $blnKeepParams = true, $strUrl = null)
+    public static function generateUrl($strGroup, $strAction = null, array $arrAttributes = [], $blnKeepParams = true, $strUrl = null)
     {
         global $objPage;
 
@@ -56,15 +59,27 @@ class AjaxAction
 
     public static function getParams($strGroup, $strAction = null)
     {
-        $arrParams = array
-        (
+        $arrParams = [
             Ajax::AJAX_ATTR_SCOPE => Ajax::AJAX_SCOPE_DEFAULT,
             Ajax::AJAX_ATTR_GROUP => $strGroup,
-        );
+        ];
 
         if ($strAction !== null)
         {
             $arrParams[Ajax::AJAX_ATTR_ACT] = $strAction;
+        }
+
+        $arrConfig = $GLOBALS['AJAX'][$strGroup]['actions'][$strAction];
+
+        if ($arrConfig && $arrConfig['csrf_protection'])
+        {
+            $strToken = Request::getGet(Ajax::AJAX_ATTR_TOKEN);
+
+            // create a new token for each action
+            if(!$strToken || ($strToken && !AjaxToken::getInstance()->validate($strToken)))
+            {
+                $arrParams[Ajax::AJAX_ATTR_TOKEN] = AjaxToken::getInstance()->create();
+            }
         }
 
         return $arrParams;
@@ -73,6 +88,12 @@ class AjaxAction
     public function call($objContext)
     {
         $objItem = null;
+
+        // remove current used ajax token
+        if($this->strToken !== null)
+        {
+            AjaxToken::getInstance()->remove($this->strToken);
+        }
 
         if ($objContext === null)
         {
@@ -97,14 +118,14 @@ class AjaxAction
             exit;
         }
 
-        return call_user_func_array(array($objContext, $this->strAction), $this->getArguments());
+        return call_user_func_array([$objContext, $this->strAction], $this->getArguments());
     }
 
     protected function getArguments()
     {
-        $arrArgumentValues = array();
+        $arrArgumentValues = [];
         $arrArguments      = $this->arrAttributes['arguments'];
-        $arrOptional       = is_array($this->arrAttributes['optional']) ? $this->arrAttributes['optional'] : array();
+        $arrOptional       = is_array($this->arrAttributes['optional']) ? $this->arrAttributes['optional'] : [];
 
         $strMethod = Request::getInstance()->getMethod();
 

@@ -10,7 +10,11 @@
 
 namespace HeimrichHannot\Ajax\Response;
 
+use HeimrichHannot\Ajax\Ajax;
+use HeimrichHannot\Ajax\AjaxAction;
+use HeimrichHannot\Ajax\AjaxToken;
 use HeimrichHannot\Ajax\Exception\AjaxExitException;
+use HeimrichHannot\Request\Request;
 
 abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse implements \JsonSerializable
 {
@@ -18,10 +22,19 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
     protected $message;
 
+    protected $token;
+
     public function __construct($message = '')
     {
         parent::__construct($message);
         $this->message = $message;
+        $this->token   = Request::getInstance()->get(Ajax::AJAX_ATTR_TOKEN);
+
+        // create a new token for each response
+        if ($this->token && !AjaxToken::getInstance()->validate($this->token))
+        {
+            $this->token = AjaxToken::getInstance()->create();
+        }
     }
 
     /**
@@ -56,6 +69,13 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
         $this->message = $message;
     }
 
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 
     public function jsonSerialize()
     {
@@ -85,6 +105,7 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
         $objOutput          = new \stdClass();
         $objOutput->result  = $this->result;
         $objOutput->message = $this->message;
+        $objOutput->token   = $this->token;
 
         return $objOutput;
     }
@@ -111,4 +132,13 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
         exit;
     }
 
+    public function send()
+    {
+        if (defined('UNIT_TESTING'))
+        {
+            throw new AjaxExitException(json_encode($this), AjaxExitException::CODE_NORMAL_EXIT);
+        }
+
+        return parent::send();
+    }
 }

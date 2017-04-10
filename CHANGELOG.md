@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2017-04-10
+
+### Added
+- `csrf_protection` (default: false) parameter support added to config for cross-origin violation protection 
+- Provide unit testing support for `HeimrichHannot\Ajax\Response::send())` when `$GLOBALS['UNIT_TESTING'] = true;`
+
 ## [1.1.2] - 2017-04-05
 
 ### Fixed

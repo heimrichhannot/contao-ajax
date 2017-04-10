@@ -35,6 +35,7 @@ $GLOBALS['AJAX'][\HeimrichHannot\FormHybrid\Form::FORMHYBRID_NAME] = array
 		(
 			'arguments' => array(),
 			'optional'   => array(),
+			'csrf_protection' => true, // cross-site request forgery (ajax token check)
 		),
 	),
 );
@@ -44,7 +45,8 @@ As you can see, we have a group `formhybrid` that delegates all ajax request wit
 Then there are some actions `toggleSubpalette`, `asyncFormSubmit` and so on. These mehtod must be present with the same name in the delegated context.
 You can provide arguments, that should be called within the function and added as arguments to the method. If the argument is `optional`, than the request
 will be valid if the argument is not present, otherwise all `arguments` must be present in the request, to have a valid ajax request.
- 
+If you want to protect the ajax request against cross site violations, than add `csrf_protection => true` to your configuration and dont forget to update the ajax url on each request!
+
 ### 2. How can i create the url to my ajax action?
 
 We provide a simple helper method within `HeimrichHannot\Ajax\AjaxAction` that is called `generateUrl`. The following example shows, how we 

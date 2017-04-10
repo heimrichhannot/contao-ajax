@@ -21,6 +21,7 @@ class Ajax extends \Controller
     const AJAX_ATTR_GROUP  = 'ag';
     const AJAX_ATTR_TYPE   = 'at';
     const AJAX_ATTR_AJAXID = 'aid';
+    const AJAX_ATTR_TOKEN  = 'ato';
 
     const AJAX_SCOPE_DEFAULT = 'ajax';
     const AJAX_TYPE_MODULE   = 'module';
@@ -28,6 +29,7 @@ class Ajax extends \Controller
     const AJAX_ERROR_INVALID_GROUP        = 1;
     const AJAX_ERROR_NO_AVAILABLE_ACTIONS = 2;
     const AJAX_ERROR_INVALID_ACTION       = 3;
+    const AJAX_ERROR_INVALID_TOKEN        = 4;
 
 
     /**
@@ -95,6 +97,12 @@ class Ajax extends \Controller
                         $objResponse->send();
                         exit;
                     }
+                    else if ($objAction === static::AJAX_ERROR_INVALID_TOKEN)
+                    {
+                        $objResponse = new ResponseError('Invalid ajax token.');
+                        $objResponse->send();
+                        exit;
+                    }
                     else
                     {
                         if ($objAction !== null)
@@ -116,7 +124,7 @@ class Ajax extends \Controller
     /**
      * Get the active ajax action object
      *
-     * @param $strGroupRequested Requested ajax group
+     * @param string $strGroupRequested Requested ajax group
      *
      * @return string The name of the active group, otherwise null
      */
@@ -153,7 +161,8 @@ class Ajax extends \Controller
      */
     public static function getActiveAction($strGroupRequested, $strActionRequested)
     {
-        $strAct = Request::getGet(static::AJAX_ATTR_ACT);
+        $strAct   = Request::getGet(static::AJAX_ATTR_ACT);
+        $strToken = Request::getGet(static::AJAX_ATTR_TOKEN);
 
         if (!$strAct)
         {
@@ -196,7 +205,13 @@ class Ajax extends \Controller
 
         $arrAttributes = $arrActions[$strAct];
 
-        return new AjaxAction($strGroup, $strAct, $arrAttributes);
+        // ajax request token check
+        if ($arrAttributes['csrf_protection'] && (!$strToken || !AjaxToken::getInstance()->validate($strToken)))
+        {
+            return static::AJAX_ERROR_INVALID_TOKEN;
+        }
+
+        return new AjaxAction($strGroup, $strAct, $arrAttributes, $strToken);
     }
 
     /**

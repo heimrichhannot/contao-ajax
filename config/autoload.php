@@ -27,6 +27,7 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\Ajax\Ajax'                        => 'system/modules/ajax/classes/Ajax.php',
 	'HeimrichHannot\Ajax\Hooks'                       => 'system/modules/ajax/classes/Hooks.php',
 	'HeimrichHannot\Ajax\AjaxAction'                  => 'system/modules/ajax/classes/AjaxAction.php',
+	'HeimrichHannot\Ajax\AjaxToken'                   => 'system/modules/ajax/classes/AjaxToken.php',
 	'HeimrichHannot\Ajax\Exception\AjaxExitException' => 'system/modules/ajax/classes/Exception/AjaxExitException.php',
 	'HeimrichHannot\Ajax\Response\ResponseRedirect'   => 'system/modules/ajax/classes/Response/ResponseRedirect.php',
 	'HeimrichHannot\Ajax\Response\Response'           => 'system/modules/ajax/classes/Response/Response.php',
