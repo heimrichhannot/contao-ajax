@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.6] - 2017-04-11
+
+### Fixed
+- fixed ajax token recreation in `Responses`
+
 ## [1.1.5] - 2017-04-10
 
 ### Fixed
