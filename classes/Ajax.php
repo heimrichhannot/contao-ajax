@@ -112,10 +112,8 @@ class Ajax extends \Controller
                             /** @var Response */
                             if ($objResponse instanceof Response)
                             {
-                                $strToken = Request::getGet(static::AJAX_ATTR_TOKEN);
-
                                 // remove used ajax tokens
-                                if($strToken !== null)
+                                if(($strToken = AjaxToken::getInstance()->getActiveToken()) !== null)
                                 {
                                     AjaxToken::getInstance()->remove($strToken);
                                 }

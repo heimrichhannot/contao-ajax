@@ -34,6 +34,7 @@ class AjaxToken
 
     /**
      * Current session object
+     *
      * @var Session
      */
     protected $objSession;
@@ -81,6 +82,22 @@ class AjaxToken
         return $strToken;
     }
 
+    /**
+     * Return the valid active token
+     *
+     * @return mixed|null The active token if valid, otherwise null.
+     */
+    public function getActiveToken()
+    {
+        $strToken = Request::getGet(Ajax::AJAX_ATTR_TOKEN);
+
+        if ($strToken && $this->validate($strToken))
+        {
+            return $strToken;
+        }
+
+        return null;
+    }
 
     /**
      * Validate a token
@@ -98,15 +115,18 @@ class AjaxToken
         }
 
         // Check against the whitelist (thanks to Tristan Lins) (see #3164)
-        if (\Config::get('requestTokenWhitelist'))
+        if (\Config::get('requestTokenWhitelist') && $_SERVER['REMOTE_ADDR'])
         {
-            $strHostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+            $strHostname = @gethostbyaddr($_SERVER['REMOTE_ADDR']);
 
-            foreach (\Config::get('requestTokenWhitelist') as $strDomain)
+            if ($strHostname)
             {
-                if ($strDomain == $strHostname || preg_match('/\.' . preg_quote($strDomain, '/') . '$/', $strHostname))
+                foreach (\Config::get('requestTokenWhitelist') as $strDomain)
                 {
-                    return true;
+                    if ($strDomain == $strHostname || preg_match('/\.' . preg_quote($strDomain, '/') . '$/', $strHostname))
+                    {
+                        return true;
+                    }
                 }
             }
         }

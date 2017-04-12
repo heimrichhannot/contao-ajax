@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.7] - 2017-04-12
+
+### Fixed
+- gethostbyaddr(): Address is not a valid IPv4 or IPv6 address for token whitelist
+- added `AjaxToken::getActiveToken()`
+
 ## [1.1.6] - 2017-04-11
 
 ### Fixed

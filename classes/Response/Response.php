@@ -28,10 +28,10 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
     {
         parent::__construct($message);
         $this->message = $message;
-        $this->token   = Request::getInstance()->get(Ajax::AJAX_ATTR_TOKEN);
+        $this->token   = AjaxToken::getInstance()->getActiveToken();
 
         // create a new token for each response
-        if ($this->token && AjaxToken::getInstance()->validate($this->token))
+        if ($this->token !== null)
         {
             $this->token = AjaxToken::getInstance()->create();
         }
