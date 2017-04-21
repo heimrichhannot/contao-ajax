@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.1.8] - 2017-04-21
+
+### Changed
+- replaced `ob_clean()` with `ob_end_clean()` to completely wipe out the buffer before sending output
+
 ## [1.1.7] - 2017-04-12
 
 ### Fixed
