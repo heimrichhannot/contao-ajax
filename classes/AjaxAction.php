@@ -51,8 +51,8 @@ class AjaxAction
             $strUrl = $blnKeepParams ? null : \Controller::generateFrontendUrl($objPage->row(), null, null, true);
         }
 
-        $strUrl = Url::addQueryString(http_build_query(static::getParams($strGroup, $strAction)), $strUrl);
-        $strUrl = Url::addQueryString(http_build_query($arrAttributes), $strUrl);
+        $strUrl = Url::addQueryString(http_build_query(static::getParams($strGroup, $strAction),'', '&'), $strUrl);
+        $strUrl = Url::addQueryString(http_build_query($arrAttributes, '', '&'), $strUrl);
 
         return $strUrl;
     }
