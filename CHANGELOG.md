@@ -1,11 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2017-12-18
+
+### Added
+- `$GLOBALS['TL_HOOKS']['beforeAjaxAction']` hook
+
 ## [1.1.9] - 2017-12-04
 
-### Changed
-* added & as arg_seperator argument to http_build_query calls, due not all hosters do this by default
-
+### Added
+- & as arg_seperator argument to http_build_query calls, due not all hosters do this by default
 
 ## [1.1.8] - 2017-04-21
 

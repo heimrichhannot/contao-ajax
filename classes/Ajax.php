@@ -10,6 +10,7 @@
 
 namespace HeimrichHannot\Ajax;
 
+use Contao\System;
 use HeimrichHannot\Ajax\Response\Response;
 use HeimrichHannot\Ajax\Response\ResponseError;
 use HeimrichHannot\Request\Request;
@@ -72,6 +73,23 @@ class Ajax extends \Controller
     {
         if (Request::getInstance()->isXmlHttpRequest())
         {
+            // Add custom logic via hook
+            if (isset($GLOBALS['TL_HOOKS']['beforeAjaxAction']) && is_array($GLOBALS['TL_HOOKS']['beforeAjaxAction']))
+            {
+                foreach ($GLOBALS['TL_HOOKS']['beforeAjaxAction'] as $callback)
+                {
+                    if (is_array($callback))
+                    {
+                        $callbackObj = System::importStatic($callback[0]);
+                        $callbackObj->{$callback[1]}($strGroup, $strAction, $objContext);
+                    }
+                    elseif (is_callable($callback))
+                    {
+                        $callback($strGroup, $strAction, $objContext);
+                    }
+                }
+            }
+
             /** @var AjaxAction */
             $objAction = Ajax::getActiveAction($strGroup, $strAction);
 
