@@ -117,7 +117,10 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
     {
         // The difference between them is ob_clean wipes the buffer then continues buffering,
         // whereas ob_end_clean wipes it, then stops buffering.
-        ob_end_clean();
+        if (!defined('UNIT_TESTING'))
+        {
+            ob_end_clean();
+        }
 
         $strBuffer = json_encode($this->getOutputData());
 
