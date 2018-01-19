@@ -4,7 +4,7 @@
     "keywords":["contao", "ajax", "request", "response"],
     "type": "contao-module",
     "homepage":"https://github.com/heimrichhannot/contao-ajax",
-    "license":"LGPL-3.0+",
+    "license":"LGPL-3.0-or-later",
     "authors":[
         {
             "name":"Heimrich & Hannot",

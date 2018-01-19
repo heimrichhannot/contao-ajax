@@ -43,7 +43,7 @@ class Ajax extends \Controller
     /**
      * Determine if the current ajax request is group related
      *
-     * @param $strGroup The ajax group
+     * @param string $strGroupRequested The ajax group
      *
      * @return boolean True / False if group from request match, otherwise null (no ajax request)
      */
@@ -178,8 +178,8 @@ class Ajax extends \Controller
     /**
      * Get the active ajax action object
      *
-     * @param $strGroupRequested  Requested ajax group
-     * @param $strActionRequested Requested ajax action within group
+     * @param string $strGroupRequested  Requested ajax group
+     * @param string $strActionRequested Requested ajax action within group
      *
      * @return AjaxAction|int  A valid AjaxAction | null if the action is not a registered ajax action
      */

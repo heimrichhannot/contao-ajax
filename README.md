@@ -1,5 +1,10 @@
 # Ajax
 
+![](https://img.shields.io/packagist/v/heimrichhannot/contao-ajax.svg)
+![](https://img.shields.io/packagist/dt/heimrichhannot/contao-ajax.svg)
+[![](https://img.shields.io/travis/heimrichhannot/contao-ajax/master.svg)](https://travis-ci.org/heimrichhannot/contao-ajax/)
+[![](https://img.shields.io/coveralls/heimrichhannot/contao-ajax/master.svg)](https://coveralls.io/github/heimrichhannot/contao-ajax)
+
 Ajax requests within contao are not centralized by default. Due to the handling of ajax requests within different types of modules 
 a simple \Environment::get('isAjaxRequest') is not enough to delegate the request to the related module / method.
 This module provides a global configuration, where you can attach your module within `$GLOBALS['AJAX']` as a custom group and 

@@ -1,6 +1,17 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2018-01-19
+
+### Fixed
+- invalid parameter documenataion
+
+### Added
+- code style fixer 
+
+### Changed
+- LGPL-3.0+ to LGPL-3.0-or-later
+
 ## [1.2.1] - 2018-01-04
 
 #### Fixed
