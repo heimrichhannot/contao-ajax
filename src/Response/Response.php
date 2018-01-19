@@ -1,17 +1,14 @@
 <?php
-/**
- * Contao Open Source CMS
+
+/*
+ * Copyright (c) 2018 Heimrich & Hannot GmbH
  *
- * Copyright (c) 2016 Heimrich & Hannot GmbH
- *
- * @author  Rico Kaltofen <r.kaltofen@heimrich-hannot.de>
- * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
+ * @license LGPL-3.0-or-later
  */
 
 namespace HeimrichHannot\Ajax\Response;
 
 use HeimrichHannot\Ajax\Ajax;
-use HeimrichHannot\Ajax\AjaxAction;
 use HeimrichHannot\Ajax\AjaxToken;
 use HeimrichHannot\Ajax\Exception\AjaxExitException;
 use HeimrichHannot\Request\Request;
@@ -28,11 +25,10 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
     {
         parent::__construct($message);
         $this->message = $message;
-        $this->token   = AjaxToken::getInstance()->getActiveToken();
+        $this->token = AjaxToken::getInstance()->getActiveToken();
 
         // create a new token for each response
-        if ($this->token !== null)
-        {
+        if (null !== $this->token) {
             $this->token = AjaxToken::getInstance()->create();
         }
     }
@@ -42,7 +38,7 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
      */
     public function getResult()
     {
-        return $this->result === null ? new ResponseData() : $this->result;
+        return null === $this->result ? new ResponseData() : $this->result;
     }
 
     /**
@@ -84,8 +80,8 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
     public function setCloseModal($blnClose = false)
     {
-        $objResult             = $this->getResult();
-        $arrData               = $objResult->getData();
+        $objResult = $this->getResult();
+        $arrData = $objResult->getData();
         $arrData['closeModal'] = $blnClose;
         $objResult->setData($arrData);
         $this->setResult($objResult);
@@ -93,8 +89,8 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
     public function setUrl($strUrl)
     {
-        $objResult      = $this->getResult();
-        $arrData        = $objResult->getData();
+        $objResult = $this->getResult();
+        $arrData = $objResult->getData();
         $arrData['url'] = $strUrl;
         $objResult->setData($arrData);
         $this->setResult($objResult);
@@ -102,23 +98,22 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
     public function getOutputData()
     {
-        $objOutput          = new \stdClass();
-        $objOutput->result  = $this->result;
+        $objOutput = new \stdClass();
+        $objOutput->result = $this->result;
         $objOutput->message = $this->message;
-        $objOutput->token   = $this->token;
+        $objOutput->token = $this->token;
 
         return $objOutput;
     }
 
     /**
-     * Output the response and clean output buffer
+     * Output the response and clean output buffer.
      */
     public function output()
     {
         // The difference between them is ob_clean wipes the buffer then continues buffering,
         // whereas ob_end_clean wipes it, then stops buffering.
-        if (!defined('UNIT_TESTING'))
-        {
+        if (!defined('UNIT_TESTING')) {
             ob_end_clean();
         }
 
@@ -130,17 +125,16 @@ abstract class Response extends \Symfony\Component\HttpFoundation\JsonResponse i
 
         $this->send();
 
-		// do not display errors in ajax request, as the generated json will no longer be valid
-		// error messages my occur, due to exit and \FrontendUser::destruct does no longer have a valid \Database instance
-        ini_set('display_errors', 0); 
+        // do not display errors in ajax request, as the generated json will no longer be valid
+        // error messages my occur, due to exit and \FrontendUser::destruct does no longer have a valid \Database instance
+        ini_set('display_errors', 0);
 
         exit;
     }
 
     public function send()
     {
-        if (defined('UNIT_TESTING'))
-        {
+        if (defined('UNIT_TESTING')) {
             throw new AjaxExitException(json_encode($this), AjaxExitException::CODE_NORMAL_EXIT);
         }
 
