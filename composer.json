@@ -24,7 +24,22 @@
         "heimrichhannot/contao-request": "^1.1"
 	},
     "autoload": {
-        "classmap": [""]
+        "psr-0": {
+            "HeimrichHannot\\Ajax\\": [
+                "src/"
+            ]
+        },
+        "psr-4": {
+            "HeimrichHannot\\Ajax\\": "src/"
+        },
+        "classmap": [
+            "src"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HeimrichHannot\\Ajax\\Test\\": "tests/"
+        }
     },
     "extra": {
         "contao": {

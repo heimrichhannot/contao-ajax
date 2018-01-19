@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 - invalid parameter documenataion
 
 ### Added
-- code style fixer, and adjusted code within `/src`
+- code style fixer, and adjusted code
 
 ### Changed
 - LGPL-3.0+ to LGPL-3.0-or-later
