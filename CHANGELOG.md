@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - LGPL-3.0+ to LGPL-3.0-or-later
+- moved classes to `/src`
 
 ## [1.2.1] - 2018-01-04
 
