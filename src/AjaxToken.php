@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2018 Heimrich & Hannot GmbH
+ * Copyright (c) 2022 Heimrich & Hannot GmbH
  *
  * @license LGPL-3.0-or-later
  */
@@ -45,17 +45,17 @@ class AjaxToken
      */
     protected function __construct()
     {
-        $this->objSession = Request::getInstance()->getSession();
-
         if (!Request::getInstance()->hasSession()) {
             $this->objSession = new Session(new PhpBridgeSessionStorage());
             $this->objSession->start();
+        } else {
+            $this->objSession = Request::getInstance()->getSession();
         }
 
         static::$arrTokens = $this->objSession->get(static::SESSION_KEY);
 
         // Generate a new token if none is available
-        if (empty(static::$arrTokens) || !is_array(static::$arrTokens)) {
+        if (empty(static::$arrTokens) || !\is_array(static::$arrTokens)) {
             static::$arrTokens[] = md5(uniqid(mt_rand(), true));
             $this->objSession->set(static::SESSION_KEY, static::$arrTokens);
         }
@@ -131,7 +131,7 @@ class AjaxToken
     public function validate($strToken)
     {
         // Validate the token
-        if ('' !== $strToken && in_array($strToken, static::$arrTokens, true)) {
+        if ('' !== $strToken && \in_array($strToken, static::$arrTokens, true)) {
             return true;
         }
 
