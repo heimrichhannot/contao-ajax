@@ -66,7 +66,7 @@ class AjaxAction
 
         $arrConfig = $GLOBALS['AJAX'][$strGroup]['actions'][$strAction];
 
-        if ($arrConfig && $arrConfig['csrf_protection']) {
+        if ($arrConfig && !empty($arrConfig['csrf_protection'])) {
             $strToken = Request::getGet(Ajax::AJAX_ATTR_TOKEN);
 
             // create a new token for each action

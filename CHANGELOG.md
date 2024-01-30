@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2024-01-30
+- Fixed: PHP8 offset array access
+
 ## [1.3.1] - 2022-02-09
 
 - Fixed: Session issue for contao 4.11+
